@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Vocacional - Etec</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #A2B193 0%, #76886A 100%);
+            color: #334155;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            transition: background-color 0.5s;
+        }
+
+        .quiz-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            padding: 2rem 2.5rem;
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 99px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 20px;
+            background: linear-gradient(90deg, #81c784, #4caf50);
+            border-radius: 99px;
+            transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .question-title {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+            line-height: 1.3;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .answers-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+            .quiz-card {
+                 padding: 3rem 4rem;
+            }
+        }
+
+        .answer-button {
+            background-color: #F1F8E9;
+            border: 2px solid #D4E1C8;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+
+        .answer-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #A2B193;
+            background-color: #e8f5e9;
+        }
+
+        #result-area {
+            display: none;
+        }
+        
+        .result-title {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #D4E1C8, #F1F8E9);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        .result-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #388e3c;
+            margin-bottom: 0.25rem;
+        }
+        .result-card p {
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            font-weight: 700;
+        }
+        
+        .start-button {
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+            background-color: #66bb6a;
+            color: white;
+            font-size: 1.6rem;
+            font-weight: 600;
+            padding: 0.9rem 3rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 6px 0 #388e3c;
+            letter-spacing: 1px;
+            margin-top: 2.5rem;
+        }
+
+        .start-button:hover {
+            background-color: #4caf50;
+            box-shadow: 0 4px 0 #388e3c;
+            transform: translateY(2px);
+        }
+
+        .start-button:active {
+            background-color: #388e3c;
+            box-shadow: 0 0 0 #388e3c;
+            transform: translateY(6px);
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container" class="quiz-card">
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div id="question-area">
+            <h2 id="question-text" class="question-title">Carregando pergunta...</h2>
+            <div id="answers-container" class="answers-grid"></div>
+        </div>
+
+        <div id="result-area">
+            <h2 class="result-title">Seu resultado!</h2>
+            <p class="text-lg mb-6">Com base nas suas respostas, estes são os cursos que mais combinam com você:</p>
+            <div class="result-card">
+                <h3>Sua 1ª Opção:</h3>
+                <p id="result1-course"></p>
+            </div>
+             <div class="result-card">
+                <h3>Sua 2ª Opção:</h3>
+                <p id="result2-course"></p>
+            </div>
+            <button onclick="window.location.reload()" class="start-button">Refazer Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "Imagine que você e seus amigos vão organizar um grande evento na escola. Qual seria sua principal contribuição?",
+                answers: [
+                    { text: "Criar uma planilha para controlar os custos e tarefas de cada um.", profiles: ["organizador"] },
+                    { text: "Desenvolver um site ou perfil em rede social para divulgar o evento.", profiles: ["tecnologico", "comunicador"] },
+                    { text: "Cuidar da segurança, garantindo que ninguém se machuque e que as regras sejam seguidas.", profiles: ["cuidador", "analitico"] },
+                    { text: "Conversar com as pessoas, entender o que elas querem e criar a 'marca' do evento.", profiles: ["comunicador"] }
+                ]
+            },
+            {
+                question: "Qual destes problemas você preferiria resolver?",
+                answers: [
+                    { text: "O mistério de um aplicativo que parou de funcionar de repente.", profiles: ["tecnologico"] },
+                    { text: "Um conflito entre dois colegas de equipe que não conseguem trabalhar juntos.", profiles: ["cuidador", "organizador"] },
+                    { text: "A melhor maneira de organizar o estoque de uma loja para não faltar produtos.", profiles: ["organizador"] },
+                    { text: "A interpretação de uma regra complicada no manual de um jogo.", profiles: ["analitico"] }
+                ]
+            },
+            {
+                question: "No seu tempo livre, o que te dá mais satisfação?",
+                answers: [
+                    { text: "Aprender um novo idioma ou sobre uma cultura diferente.", profiles: ["comunicador"] },
+                    { text: "Automatizar uma tarefa chata no computador com um pequeno script.", profiles: ["tecnologico"] },
+                    { text: "Ajudar como voluntário em uma causa social ou ensinar algo a alguém.", profiles: ["cuidador"] },
+                    { text: "Montar um quebra-cabeça complexo ou jogar um jogo de estratégia.", profiles: ["organizador", "analitico"] }
+                ]
+            },
+            {
+                question: "Se você pudesse criar algo novo, o que seria?",
+                answers: [
+                    { text: "Um novo negócio ou um plano para melhorar uma empresa existente.", profiles: ["organizador"] },
+                    { text: "Uma campanha de marketing criativa para um produto que você adora.", profiles: ["comunicador"] },
+                    { text: "Um programa para ajudar a garantir o bem-estar e a saúde das pessoas.", profiles: ["cuidador"] },
+                    { text: "Um jogo ou aplicativo para resolver problemas do dia a dia.", profiles: ["tecnologico"] }
+                ]
+            },
+            {
+                question: "Qual ambiente de trabalho parece mais interessante para você?",
+                answers: [
+                    { text: "Um escritório dinâmico, cheio de reuniões e planejamentos.", profiles: ["organizador"] },
+                    { text: "Um laboratório de tecnologia, onde você pode programar e testar novas ideias.", profiles: ["tecnologico"] },
+                    { text: "Um ambiente onde as regras e os detalhes são muito importantes, como um escritório de advocacia.", profiles: ["analitico"] },
+                    { text: "Trabalhando diretamente com o público, entendendo suas necessidades e ajudando-os.", profiles: ["cuidador", "comunicador"] }
+                ]
+            }
+        ];
+
+        const courseMapping = {
+            organizador: ["Administração", "Logística", "Recursos Humanos"],
+            comunicador: ["Marketing", "Comércio Exterior"],
+            tecnologico: ["Desenvolvimento de Sistemas", "Informática para Internet"],
+            cuidador: ["Cuidados de Idosos", "Segurança do Trabalho"],
+            analitico: ["Serviços Jurídicos"]
+        };
+
+        let currentQuestionIndex = 0;
+        const scores = { organizador: 0, comunicador: 0, tecnologico: 0, cuidador: 0, analitico: 0 };
+
+        const questionTextEl = document.getElementById('question-text');
+        const answersContainerEl = document.getElementById('answers-container');
+        const questionArea = document.getElementById('question-area');
+        const resultArea = document.getElementById('result-area');
+        const progressBar = document.getElementById('progress-bar');
+        const result1El = document.getElementById('result1-course');
+        const result2El = document.getElementById('result2-course');
+
+        function showQuestion() {
+            progressBar.style.width = `${((currentQuestionIndex + 1) / quizData.length) * 100}%`;
+            
+            const currentQuestion = quizData[currentQuestionIndex];
+            questionTextEl.innerText = currentQuestion.question;
+            answersContainerEl.innerHTML = '';
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text;
+                button.classList.add('answer-button');
+                button.onclick = () => selectAnswer(answer.profiles);
+                answersContainerEl.appendChild(button);
+            });
+        }
+
+        function selectAnswer(profiles) {
+            profiles.forEach(p => {
+                if (scores.hasOwnProperty(p)) {
+                    scores[p]++;
+                }
+            });
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            progressBar.parentElement.style.display = 'none';
+            questionArea.style.display = 'none';
+            resultArea.style.display = 'block';
+
+            const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            
+            const topProfile = sortedScores[0][0];
+            const secondProfile = sortedScores[1][0];
+
+            const firstCourseList = courseMapping[topProfile];
+            const firstCourse = firstCourseList[Math.floor(Math.random() * firstCourseList.length)];
+            
+            const secondCourseList = courseMapping[secondProfile];
+            const secondCourse = secondCourseList[Math.floor(Math.random() * secondCourseList.length)];
+
+            result1El.innerText = firstCourse;
+            result2El.innerText = secondCourse;
+        }
+
+        document.addEventListener('DOMContentLoaded', showQuestion);
+    </script>
+</body>
+</html>
