@@ -28,7 +28,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #F1F8E9;
+            background-color: rgba(241, 248, 233, 0.8);
             backdrop-filter: blur(10px);
             z-index: 1000;
             display: flex;
@@ -61,7 +61,7 @@
 
         .navbar a:hover {
             background-color: #A2B193;
-            color: #334155;
+            color: white;
             transform: translateY(-5px);
         }
         
@@ -170,14 +170,13 @@
         .carousel-wrapper {
             display: flex;
             align-items: center;
-            /* justify-content: center; Removido para permitir alinhamento manual */
         }
         
         .carousel {
             display: flex;
             transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             gap: 2rem;
-            align-items: center; /* Adicionado */
+            align-items: center;
         }
 
         .carousel-card {
@@ -192,13 +191,12 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease; /* Modificado */
+            transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease;
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            transform: scale(0.9); /* Adicionado */
-            opacity: 0.6; /* Adicionado */
+            transform: scale(0.9);
+            opacity: 0.6;
         }
 
-        /* Novo: Estilo para o card ativo e centralizado */
         .carousel-card.active {
             transform: scale(1.05);
             opacity: 1;
@@ -206,9 +204,9 @@
         }
         
         .carousel-card:hover {
-            transform: translateY(-10px) scale(1.1); /* Modificado */
+            transform: translateY(-10px) scale(1.1);
             box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-            opacity: 1; /* Adicionado */
+            opacity: 1;
         }
         
         .scroll-button {
@@ -226,11 +224,11 @@
         }
         
         .scroll-button.left {
-            left: 20px; /* Movido para dentro do contêiner */
+            left: 20px;
         }
         
         .scroll-button.right {
-            right: 20px; /* Movido para dentro do contêiner */
+            right: 20px;
         }
         
         .scroll-button:hover {
@@ -324,7 +322,7 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCABxAFYDAREAAxEB/8QAGwAAAwEBAQEBAAAAAAAAAAAAAAECAwQFBgf/xAA5EAACAgEDAwIEBAMGBwAAAAABAgAREyExBBIiQVEFFDNxgZFSYXKhwdEjseEVgpLRB/A/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APxO7G5FmB+Zf2lYx1z/eB0r2q/tG1tY6d0f8Aef7mK+q78w/uW21Y7N9P8zKkQ9b/AJGzEa3/ACM1n/8A4mK2f+f5gRrb/wCYwYv/AE3+Zf+B2/8AczFj/wCc/wATKkRe1/8ACFexj9B/eFj/AIn+xN6v6f4mFmP1/mYm1V/d/c9U3b9P7mD3Y9G/zM9P9v4mVER1r/mX/AIE7f+Zm+1n/AHf3N7G9P9m9zKiB7e3v7/ADMF/wCYP8w9P9f7mf1P+f3nUREj39/wBTP9n/AJjY/wA/4j1T/P+ZkRGN+b/ADMx8/8Acr/z/wBCjGf9P9zKhFf9v7j4z/f+42J1f9/wDMwYx6H+JmVEFj6H/ADK+q78w/uDHP9D/AHMx8/4mZURq3/M/9zNi9Wf+BqMv6H+JkC9D/AJhUT2v9f4jYvQ/zMF/wAx/uKx0P8AuZVER1P/ADE+27f9xJ/wP8TCzH6D+5lSJPf/AK/zMx/wBf7h4+v+p/uZqM/wBQ/uZiIiM/6h/cMfr/ANRMTb/n/eZifQf3MyIiMb6f7j/wA/7h4x/wAh/czGOn6/zMqIqP8Az/zMnq/+f+5Jb/n/wCYm/Bf7mVER+5+X+Y+v+j/cz/AKf6P9zN+P8AT/czKiH3P/zK+r/P+ZmD9/wDMzH6/zMqIh9v+f3M/H+p/uJ/w/wBz/czf/n/uZiIiJb6/wBzM/r/AL/zMx/1/uJmP+P9zKiIie3v7zN+n+f8AzK/8z/3M/wC3/uZEVEZ/1/3ExP8Aqf7if8L/cyP+X+5lRGP+P8Af8zA4v8AmL/b+4wYx/wA/5lVEr/Bf7g4n+Yn+1/wA/zM/r/uf7mVEf7B/mJj/AJH+4hP+B/mYmP6f4mZUREn+P9zP+H+5mV/wCf9zM/6f4hURq3/P+5hYfQ/3GzF/P+5jZj9D/AHKiH+9P8zMx+g/uNmX9D/cTFj+h/uZUR+v/AG/3M/of7mf1/n/eZif7f3nURETvT/ADMx/wA/5l/n/cTE/+P8zMhFf+P8Acz/r/cTE/wCf9zMx0f7hURr+r/cTE/5/c/3MX7hY6f+3+5UR/wAv7mb6/zP+5/1P+f3MRn9D/AHKiI+z/AM/7j4v+/wDMzH6/3P8AzMx/1/mVER/8H+4jG9v3n/mZif9v7jY+n+JmVERJ/x/3Mx/1/mJj/p/cTF+T/AHMqIif8L/czH+j/AczE/wCP9zFj/wAP9zKiIn/AHP9zM/8H+4jHj/AC/zMf8A9n/c/3MhEX9B/uZifQ/3Ex/s/3P8AM/p/cz/czIiI//Z" alt="Mascote Jacaré" class="navbar-logo">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCABxAFYDAREAAxEB/8QAGwAAAwEBAQEBAAAAAAAAAAAAAAECAwQFBgf/xAA5EAACAgEDAwIEBAMGBwAAAAABAgAREyExBBIiQVEFFDNxgZFSYXKhwdEjseEVgpLRB/A/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/APxO7G5FmB+Zf2lYx1z/eB0r2q/tG1tY6d0f8Aef7mK+q78w/uW21Y7N9P8zKkQ9b/AJGzEa3/ACM1n/8A4mK2f+f5gRrb/wCYwYv/AE3+Zf+B2/8AczFj/wCc/wATKkRe1/8ACFexj9B/eFj/AIn+xN6v6f4mFmP1/mYm1V/d/c9U3b9P7mD3Y9G/zM9P9v4mVER1r/mX/gIE7f+Zm+1n/AHf3N7G9P9m9zKiB7e3v7/ADMF/wCYP8w9P9f7mf1P+f3nUREj39/wBTP9n/AJjY/wA/4j1T/P+ZkRGN+b/ADMx8/8Acr/z/wBCjGf9P9zKhFf9v7j4z/f+42J1f9/wDMwYx6H+JmVEFj6H/ADK+q78w/uDHP9D/AHMx8/4mZURq3/M/9zNi9Wf+BqMv6H+JkC9D/AJhUT2v9f4jYvQ/zMF/wAx/uKx0P8AuZVER1P/ADE+27f9xJ/wP8TCzH6D+5lSJPf/AK/zMx/wBf7h4+v+p/uZqM/wBQ/uZiIiM/6h/cMfr/ANRMTb/n/eZifQf3MyIiMb6f7j/wA/7h4x/wAh/czGOn6/zMqIqP8Az/zMnq/+f+5Jb/n/wCYm/Bf7mVER+5+X+Y+v+j/cz/AKf6P9zN+P8AT/czKiH3P/zK+r/P+ZmD9/8AMzH6/zMqIh9v+f3M/H+p/uJ/w/wBz/czf/n/uZiIiJb6/wBzM/r/AL/zMx/w/uJmP+P9zKiIie3v7zN+n+f8AzK/8z/3M/wC3/uZEVEZ/1/3ExP8Aqf7if8L/cyP+X+5lRGP+P8Af8zA4v8AmL/b+4wYx/wA/5lVEr/Bf7g4n+Yn+1/wA/zM/r/uf7mVEf7B/mJj/AJH+4hP+B/mYmP6f4mZUREn+P9zP+H+5mV/wCf9zM/6f4hURq3/P+5hYfQ/3GzF/P+5jZj9D/AHKiH+9P8zMx+g/uNmX9D/cTFj+h/uZUR+v/AG/3M/of7mf1/n/eZif7f3nURETvT/ADMx/wA/5l/n/cTE/+P8zMhFf+P8Acz/r/cTE/wCf9zMx0f7hURr+r/cTE/5/c/3MX7hY6f+3+5UR/wAv7mb6/zP+5/1P+f3MRn9D/AHKiI+z/AM/7j4v+/wDMzH6/3P8AzMx/1/mVER/8H+4jG9v3n/mZif9v7jY+n+JmVERJ/x/3Mx/1/mJj/p/cTF+T/AHMqIif8L/czH+j/ACNNzE/wCP9zFj/wAP9zKiIn/AHP9zM/8H+4jHj/AC/zMf8A9n/c/3MhEX9B/uZifQ/3Ex/s/3P8AM/p/cz/czIiI//Z" alt="Mascote Jacaré" class="navbar-logo">
         <div class="navbar-links">
             <a href="#home">Início</a>
             <a href="#quiz-info">Sobre o Quiz</a>
@@ -460,10 +458,8 @@
             }
         ];
 
-        // Variável para rastrear a posição do carrossel
         let carouselPosition = 0;
         
-        // Função para mostrar o modal
         function showModal(course) {
             const modal = document.getElementById('course-modal');
             const modalContent = modal.querySelector('.modal-content');
@@ -477,23 +473,20 @@
             modalContent.classList.remove('out');
         }
 
-        // Função para fechar o modal
         function closeModal() {
             const modal = document.getElementById('course-modal');
             const modalContent = modal.querySelector('.modal-content');
             modalContent.classList.add('out');
             setTimeout(() => {
                 modal.style.display = 'none';
-            }, 500); // Tempo da animação
+            }, 500); 
         }
 
-        // Gerar cards de cursos e configurar eventos quando o DOM estiver pronto
         document.addEventListener('DOMContentLoaded', () => {
             const carousel = document.getElementById('course-carousel');
             const scrollLeftBtn = document.getElementById('scroll-left');
             const scrollRightBtn = document.getElementById('scroll-right');
 
-            // Popula o carrossel com os cursos
             courses.forEach(course => {
                 const card = document.createElement('div');
                 card.className = 'carousel-card';
@@ -506,17 +499,14 @@
                 carousel.appendChild(card);
             });
 
-            // Função para atualizar a aparência e posição do carrossel, centralizando o item ativo
             function updateCarousel() {
                 const carouselContainer = document.querySelector('.carousel-container');
-                const cardElementWidth = 250; // Largura do card
-                const gapWidth = 32; // 2rem de gap
+                const cardElementWidth = 250; 
+                const gapWidth = 32; 
                 
-                // Calcula o deslocamento para centralizar o card ativo
                 const offset = (carouselContainer.offsetWidth / 2) - (cardElementWidth / 2) - (carouselPosition * (cardElementWidth + gapWidth));
                 carousel.style.transform = `translateX(${offset}px)`;
 
-                // Adiciona/remove a classe 'active' para o efeito visual
                 const cards = document.querySelectorAll('.carousel-card');
                 cards.forEach((card, index) => {
                     if (index === carouselPosition) {
@@ -527,7 +517,6 @@
                 });
             }
 
-            // Eventos dos botões de rolagem
             scrollLeftBtn.addEventListener('click', () => {
                 if (carouselPosition > 0) {
                     carouselPosition--;
@@ -542,26 +531,23 @@
                 }
             });
             
-            // Script para o botão de início
+            // --- CORREÇÃO AQUI ---
+            // Adiciona a função para redirecionar para a página do quiz
             document.getElementById('start-button').addEventListener('click', function() {
-                console.log('Quiz iniciado! Próxima fase do quiz aqui.');
+                window.location.href = './quiz.html';
             });
             
-            // Adiciona event listener para fechar o modal ao clicar fora
             document.getElementById('course-modal').addEventListener('click', (e) => {
                 if (e.target.id === 'course-modal') {
                     closeModal();
                 }
             });
 
-            // Atualiza o carrossel no redimensionamento da janela
             window.addEventListener('resize', updateCarousel);
             
-            // Inicializa o carrossel na posição correta
             updateCarousel();
         });
     </script>
 </body>
 </html>
-
 
