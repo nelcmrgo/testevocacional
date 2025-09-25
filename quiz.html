@@ -31,308 +31,397 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s, opacity 0.5s;
         }
 
-        .progress-bar-container {
-            width: 100%;
-            background-color: #d1d5db;
-            border-radius: 9999px;
-            height: 0.75rem;
-            overflow: hidden;
-            margin-bottom: 1rem;
+        .pop-in { animation: popIn 0.5s forwards; }
+        @keyframes popIn {
+            from { transform: scale(0.9) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
 
-        .progress-bar {
-            height: 100%;
-            background-color: #4CAF50; /* Green */
-            border-radius: 9999px;
-            transition: width 0.3s ease-in-out;
+        .bounce { animation: bounce 0.6s forwards; animation-delay: 0.2s; }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
         }
 
-        .answers-container {
-            display: grid;
-            gap: 1rem;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        }
-
-        .answer-button {
-            background-color: #e0e7e9; /* Light gray */
-            color: #334155;
-            font-weight: 600;
-            padding: 1rem 1.5rem;
-            border-radius: 1.5rem;
-            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px #94a3b8; /* Subtle shadow */
-        }
-
-        .answer-button:hover {
-            transform: translateY(-2px);
-            background-color: #d1d5db;
-            box-shadow: 0 6px #64748b;
-        }
-
-        .result-container {
-            display: none;
-            text-align: center;
-            gap: 1.5rem;
-            flex-direction: column;
-        }
-
-        .result-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a202c;
-        }
-
-        .result-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .result-item {
-            background-color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 1.5rem;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .result-explanation {
-            font-size: 1rem;
-            color: #4b5563;
-            text-align: left;
-            margin-top: 1rem;
-        }
-
-        .back-button {
-            background-color: #34d399; /* Light green */
+        .option {
+            background-color: #A2B193;
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 1.5rem;
-            font-weight: 700;
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px #10b981; /* Subtle shadow */
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
             cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+        }
+        .option:hover { transform: translateY(-2px); background-color: #76886A; }
+        .option:disabled { background-color: #ccc; cursor: not-allowed; transform: none; }
+        
+        #question-area, #result-area, #game-area, #guess-word-area, #organize-routine-area, #pre-game-area {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .back-button:hover {
-            transform: translateY(-2px);
-            background-color: #10b981;
-            box-shadow: 0 6px #047857;
-        }
+        /* Estilos dos Jogos */
+        .game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%; max-width: 400px; margin-top: 2rem; }
+        .memory-card { width: 80px; height: 80px; position: relative; transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); border-radius: 1rem; }
+        .memory-card.flipped { transform: rotateY(180deg); }
+        .memory-card .card-face { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; border-radius: 1rem; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; }
+        .memory-card .card-front { background-color: #A2B193; color: #fff; transform: rotateY(180deg); }
+        .memory-card .card-back { background-color: #E6D8A2; }
 
-        @media (max-width: 640px) {
-            .quiz-card {
-                padding: 1.5rem;
-            }
+        #word-display { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem; }
+        .letter-box { width: 40px; height: 40px; border-bottom: 4px solid #76886A; display: inline-flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; text-transform: uppercase; }
+        #keyboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); gap: 0.5rem; width: 100%; max-width: 450px; margin-top: 1rem; }
+        .key { background-color: #A2B193; color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+        .key:disabled { background-color: #ccc; cursor: not-allowed; }
 
-            .answer-button {
-                padding: 0.75rem;
-                font-size: 0.9rem;
-            }
-        }
+        #task-list { list-style: none; padding: 0; margin-top: 1.5rem; width: 100%; max-width: 350px; }
+        .task-item { background-color: #e2e8f0; padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; cursor: grab; user-select: none; transition: background-color 0.2s; border: 2px solid transparent; }
+        .task-item:active { cursor: grabbing; background-color: #cbd5e1; }
+        .task-item.over { border-color: #76886A; }
+
+        /* Pré-jogo */
+        #pre-game-area { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 200px; }
+        .pre-game-bar { width: 80%; height: 15px; background-color: #E2E8F0; border-radius: 9999px; overflow: hidden; }
+        .pre-game-progress { height: 100%; background-color: #76886A; width: 0; transition: width 2s linear; }
     </style>
 </head>
-<body>
-    <div class="quiz-card">
-        <h1 class="text-3xl font-bold mb-4 text-center">Quiz Vocacional</h1>
-
-        <!-- Quiz Section -->
-        <div id="question-area" class="w-full">
-            <div class="progress-bar-container">
-                <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
-            </div>
-            <p id="question-text" class="text-xl font-semibold mb-4 text-center"></p>
-            <div id="answers-container" class="answers-container"></div>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <main class="quiz-card p-8 rounded-xl shadow-2xl flex flex-col items-center pop-in">
+        <!-- Telas -->
+        <div id="pre-game-area">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Prepare-se!</h1>
+            <p class="text-lg text-gray-600 mb-4">Um novo desafio te espera.</p>
+            <div class="pre-game-bar"><div id="pre-game-progress" class="pre-game-progress"></div></div>
         </div>
 
-        <!-- Result Section -->
-        <div id="result-area" class="result-container">
-            <p class="result-title">Os cursos que mais combinam com você são:</p>
-            <div class="result-list">
-                <div id="result-1" class="result-item"></div>
-                <div id="result-2" class="result-item"></div>
+        <div id="question-area">
+            <div class="mb-6 text-center">
+                <p id="question-number" class="text-lg font-bold text-gray-600 mb-2"></p>
+                <h1 id="question-text" class="text-2xl md:text-3xl font-bold mb-4 text-gray-800"></h1>
             </div>
-            <p id="result-explanation" class="result-explanation"></p>
-            <button id="back-to-menu-button" class="back-button mt-4">Voltar ao Menu</button>
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-6">
+                <div id="progress-bar" class="bg-gray-500 h-2.5 rounded-full transition-all" style="width: 0%"></div>
+            </div>
         </div>
-    </div>
+        
+        <!-- Jogo da Memória -->
+        <div id="game-area">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Jogo da Memória!</h1>
+            <p class="text-lg text-gray-600 mb-4">Encontre os pares para ganhar pontos extras!</p>
+            <div id="game-grid" class="game-grid"></div>
+            <p id="game-status" class="text-lg font-semibold mt-4"></p>
+        </div>
+
+        <!-- Jogo de Adivinhar a Palavra -->
+        <div id="guess-word-area">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Adivinhe a Palavra!</h1>
+            <p id="word-category" class="text-lg text-gray-600 mb-4"></p>
+            <div id="word-display"></div>
+            <div id="keyboard"></div>
+            <p id="guess-word-status" class="text-lg font-semibold mt-4"></p>
+        </div>
+
+        <!-- Jogo de Organizar a Rotina -->
+        <div id="organize-routine-area">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Organize a Rotina!</h1>
+            <p class="text-lg text-gray-600 mb-4">Arraste as tarefas para a ordem correta de um dia produtivo.</p>
+            <ul id="task-list"></ul>
+            <button id="check-order-btn" class="option mt-4">Verificar Ordem</button>
+            <p id="organize-routine-status" class="text-lg font-semibold mt-4"></p>
+        </div>
+
+        <!-- Resultado -->
+        <div id="result-area">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 bounce">Parabéns!</h2>
+            <p class="text-lg md:text-xl text-gray-600 mb-6" id="result-explanation"></p>
+            <div class="w-full space-y-4">
+                <div class="bg-gray-200 p-4 rounded-xl shadow-inner "><p class="text-lg font-semibold text-gray-700">Sua melhor opção:</p><p id="result-1" class="text-xl font-bold text-gray-900 mt-1"></p></div>
+                <div class="bg-gray-200 p-4 rounded-xl shadow-inner"><p class="text-lg font-semibold text-gray-700">Uma ótima segunda opção:</p><p id="result-2" class="text-xl font-bold text-gray-900 mt-1"></p></div>
+            </div>
+            <button id="back-to-menu-button" class="mt-8 bg-gray-500 text-white font-bold py-3 px-6 rounded-full shadow-lg">Voltar ao Início</button>
+        </div>
+    </main>
 
     <script>
-        // Quiz Data
         const quizData = [
-            {
-                question: "Qual tipo de atividade te atrai mais?",
-                answers: [
-                    { text: "Resolver problemas lógicos e matemáticos.", profiles: ["tecnologia", "exatas"] },
-                    { text: "Criar coisas, desenhar ou escrever.", profiles: ["humanas", "comunicacao"] },
-                    { text: "Lidar com pessoas, ensinar ou ajudar.", profiles: ["saude", "humanas"] },
-                    { text: "Trabalhar com máquinas e tecnologia.", profiles: ["tecnologia", "exatas"] },
-                ]
-            },
-            {
-                question: "Em uma equipe, qual papel você prefere?",
-                answers: [
-                    { text: "Liderar e organizar o trabalho.", profiles: ["gestao", "humanas"] },
-                    { text: "Focar em uma tarefa específica e detalhada.", profiles: ["tecnologia", "exatas"] },
-                    { text: "Colaborar e comunicar com os outros.", profiles: ["saude", "humanas"] },
-                    { text: "Analisar dados e encontrar padrões.", profiles: ["exatas", "gestao"] },
-                ]
-            },
-            {
-                question: "Seu principal interesse é:",
-                answers: [
-                    { text: "Saúde e bem-estar das pessoas.", profiles: ["saude"] },
-                    { text: "Negócios e finanças.", profiles: ["gestao", "exatas"] },
-                    { text: "Desenvolvimento de software e jogos.", profiles: ["tecnologia"] },
-                    { text: "Cultura, história ou sociedade.", profiles: ["humanas"] },
-                ]
-            },
-            {
-                question: "Qual ambiente de trabalho é mais atraente?",
-                answers: [
-                    { text: "Um laboratório ou clínica.", profiles: ["saude"] },
-                    { text: "Um escritório dinâmico.", profiles: ["gestao"] },
-                    { text: "Uma startup de tecnologia.", profiles: ["tecnologia", "comunicacao"] },
-                    { text: "Um ambiente acadêmico ou de pesquisa.", profiles: ["humanas", "exatas"] },
-                ]
-            },
-            {
-                question: "Que tipo de filme ou série você mais gosta?",
-                answers: [
-                    { text: "Documentários sobre ciência.", profiles: ["exatas", "saude"] },
-                    { text: "Séries sobre empreendedorismo.", profiles: ["gestao", "comunicacao"] },
-                    { text: "Filmes de ficção científica com efeitos visuais.", profiles: ["tecnologia"] },
-                    { text: "Dramas históricos ou comédias românticas.", profiles: ["humanas"] },
-                ]
-            },
-            {
-                question: "O que te deixa mais satisfeito no dia a dia?",
-                answers: [
-                    { text: "Ajudar as pessoas a se sentirem melhor.", profiles: ["saude"] },
-                    { text: "Ver um projeto complexo sendo concluído.", profiles: ["tecnologia", "exatas"] },
-                    { text: "Lidar com a parte financeira de um negócio.", profiles: ["gestao"] },
-                    { text: "Ensinar algo novo a alguém.", profiles: ["humanas", "saude"] },
-                ]
-            },
-            {
-                question: "Que hobby você preferiria ter?",
-                answers: [
-                    { text: "Programação ou criação de aplicativos.", profiles: ["tecnologia", "exatas"] },
-                    { text: "Estudar línguas ou culturas diferentes.", profiles: ["humanas", "comunicacao"] },
-                    { text: "Aprender sobre nutrição ou primeiros socorros.", profiles: ["saude"] },
-                    { text: "Planejar eventos ou viagens.", profiles: ["gestao", "humanas"] },
-                ]
-            }
+            // Bloco 1
+            { question: "Qual atividade você prefere no seu tempo livre?", options: [ { text: "Criar conteúdo para redes sociais ou um blog.", profile: "COM" }, { text: "Organizar eventos ou participar de projetos.", profile: "NEG" }, { text: "Montar ou programar robôs e computadores.", profile: "TEC" }, { text: "Aprender sobre o corpo humano e biologia.", profile: "SAU" } ] },
+            { question: "Se você pudesse ter um superpoder, qual seria?", options: [ { text: "Habilidade de se comunicar com qualquer pessoa.", profile: "COM" }, { text: "Visão de negócios para identificar oportunidades.", profile: "NEG" }, { text: "Controle sobre a tecnologia e máquinas.", profile: "TEC" }, { text: "Poder de curar doenças.", profile: "SAU" } ] },
+            { question: "Em um projeto de grupo, qual papel você assume?", options: [ { text: "O comunicador, que apresenta as ideias.", profile: "COM" }, { text: "O líder, que organiza e delega tarefas.", profile: "NEG" }, { text: "O técnico, que resolve os problemas complexos.", profile: "TEC" }, { text: "O cuidador, que se preocupa com a equipe.", profile: "SAU" } ] },
+            { question: "Qual tipo de filme ou série você mais gosta?", options: [ { text: "Documentários sobre cultura e sociedade.", profile: "COM" }, { text: "Séries sobre empreendedorismo e finanças.", profile: "NEG" }, { text: "Ficção científica com alta tecnologia.", profile: "TEC" }, { text: "Dramas médicos ou sobre superação.", profile: "SAU" } ] },
+            { question: "Se você fosse um animal, qual seria?", options: [ { text: "Um papagaio, pois é comunicativo.", profile: "COM" }, { text: "Uma formiga, pois trabalha em equipe.", profile: "NEG" }, { text: "Um polvo, por ser inteligente e se adaptar.", profile: "TEC" }, { text: "Um golfinho, pois ajuda outros seres.", profile: "SAU" } ] },
+            // Bloco 2
+            { question: "Qual tipo de desafio você gosta de resolver?", options: [ { text: "Convencer alguém de uma ideia.", profile: "COM" }, { text: "Negociar um bom acordo.", profile: "NEG" }, { text: "Corrigir um erro em um código ou sistema.", profile: "TEC" }, { text: "Ajudar alguém com um problema pessoal.", profile: "SAU" } ] },
+            { question: "Em uma feira de profissões, qual estande te atrairia?", options: [ { text: "Marketing ou Relações Públicas.", profile: "COM" }, { text: "Administração ou Logística.", profile: "NEG" }, { text: "Desenvolvimento de Sistemas ou Web Design.", profile: "TEC" }, { text: "Enfermagem ou Segurança do Trabalho.", profile: "SAU" } ] },
+            { question: "Qual habilidade técnica você gostaria de aprender?", options: [ { text: "Oratória e apresentação.", profile: "COM" }, { text: "Planejamento financeiro.", profile: "NEG" }, { text: "Linguagem de programação.", profile: "TEC" }, { text: "Primeiros socorros.", profile: "SAU" } ] },
+            { question: "Qual palavra te descreve melhor?", options: [ { text: "Criativo(a).", profile: "COM" }, { text: "Organizado(a).", profile: "NEG" }, { text: "Lógico(a).", profile: "TEC" }, { text: "Empático(a).", profile: "SAU" } ] },
+            { question: "O que te inspira?", options: [ { text: "Uma boa conversa ou um discurso.", profile: "COM" }, { text: "Uma empresa de sucesso.", profile: "NEG" }, { text: "A inovação tecnológica.", profile: "TEC" }, { text: "Histórias de superação humana.", profile: "SAU" } ] },
+            // Bloco 3 - Novas perguntas
+            { question: "Como você prefere aprender algo novo?", options: [ { text: "Lendo e escrevendo sobre o assunto.", profile: "COM" }, { text: "Analisando estudos de caso e exemplos práticos.", profile: "NEG" }, { text: "Experimentando e testando na prática.", profile: "TEC" }, { text: "Observando e ajudando alguém experiente.", profile: "SAU" } ] },
+            { question: "Qual ambiente de trabalho parece mais atraente?", options: [ { text: "Uma agência de publicidade movimentada.", profile: "COM" }, { text: "Um escritório corporativo bem estruturado.", profile: "NEG" }, { text: "Um laboratório de tecnologia ou uma startup.", profile: "TEC" }, { text: "Um hospital, clínica ou espaço de cuidado.", profile: "SAU" } ] },
+            { question: "Seu smartphone é principalmente para...", options: [ { text: "Comunicar-se e usar redes sociais.", profile: "COM" }, { text: "Organizar tarefas e gerenciar finanças.", profile: "NEG" }, { text: "Explorar novas tecnologias e apps.", profile: "TEC" }, { text: "Monitorar saúde e bem-estar.", profile: "SAU" } ] },
+            { question: "Qual problema mundial você gostaria de resolver?", options: [ { text: "A falta de comunicação e entendimento entre povos.", profile: "COM" }, { text: "A ineficiência e o desperdício de recursos.", profile: "NEG" }, { text: "A barreira de acesso à tecnologia e informação.", profile: "TEC" }, { text: "A falta de acesso à saúde de qualidade.", profile: "SAU" } ] },
+            { question: "Em um jogo de tabuleiro, você é quem...", options: [ { text: "Explica as regras para todo mundo.", profile: "COM" }, { text: "Cria a melhor estratégia para vencer.", profile: "NEG" }, { text: "Encontra uma brecha nas regras para inovar.", profile: "TEC" }, { text: "Garante que todos estejam se divertindo.", profile: "SAU" } ] },
+            // Bloco 4 - Novas Perguntas
+            { question: "Qual matéria escolar era sua preferida?", options: [ { text: "Português ou Artes.", profile: "COM" }, { text: "Matemática ou Geografia.", profile: "NEG" }, { text: "Física ou Informática.", profile: "TEC" }, { text: "Biologia ou Química.", profile: "SAU" } ] },
+            { question: "O que você valoriza mais em um trabalho?", options: [ { text: "A chance de expressar minhas ideias.", profile: "COM" }, { text: "A possibilidade de crescimento e liderança.", profile: "NEG" }, { text: "A oportunidade de criar e inovar.", profile: "TEC" }, { text: "O sentimento de estar ajudando os outros.", profile: "SAU" } ] },
+            { question: "Qual tipo de ferramenta você mais gosta de usar?", options: [ { text: "Editores de texto e imagem.", profile: "COM" }, { text: "Planilhas e softwares de gestão.", profile: "NEG" }, { text: "Ferramentas de programação e hardware.", profile: "TEC" }, { text: "Equipamentos médicos ou de laboratório.", profile: "SAU" } ] },
+            { question: "Ao planejar uma viagem, o que é mais importante?", options: [ { text: "O roteiro cultural e os pontos de interação.", profile: "COM" }, { text: "O orçamento e a logística do transporte.", profile: "NEG" }, { text: "Os gadgets e apps que vou usar para me guiar.", profile: "TEC" }, { text: "A segurança e o bem-estar de todos no grupo.", profile: "SAU" } ] },
+            { question: "Para você, sucesso é...", options: [ { text: "Ser reconhecido por suas ideias.", profile: "COM" }, { text: "Alcançar metas e ter estabilidade.", profile: "NEG" }, { text: "Construir algo que ninguém nunca fez.", profile: "TEC" }, { text: "Fazer a diferença na vida das pessoas.", profile: "SAU" } ] },
         ];
-
-        // Profile descriptions
-        const profileDescriptions = {
-            "exatas": "Seu perfil é voltado para a **lógica, resolução de problemas e análise**. Você gosta de trabalhar com números, sistemas e processos bem definidos.",
-            "tecnologia": "Seu perfil indica **afinidade com inovação, computação e sistemas**. Você se sente motivado ao criar, desenvolver e lidar com tecnologia.",
-            "saude": "Seu perfil é ideal para a área de **saúde e bem-estar**. Você tem interesse em cuidar das pessoas, ajudar a solucionar problemas de saúde e lidar com o corpo humano.",
-            "humanas": "Seu perfil é **comunicativo e voltado para a interação social e cultural**. Você gosta de entender o comportamento humano e trabalhar com pessoas.",
-            "gestao": "Seu perfil é focado em **organização, planejamento e liderança**. Você gosta de gerenciar projetos, pessoas e recursos para alcançar objetivos.",
-            "comunicacao": "Seu perfil tem forte **inclinação para a interação, criatividade e estratégias de mercado**. Você se interessa em como produtos e ideias se conectam com o público."
-        };
-
-        // Course mapping
+        
         const courseMapping = {
-            "exatas": ["Curso Técnico em Desenvolvimento de Sistemas", "Curso Técnico em Informática para Internet", "Curso Técnico em Segurança do Trabalho"],
-            "tecnologia": ["Curso Técnico em Desenvolvimento de Sistemas", "Curso Técnico em Informática para Internet", "Curso Técnico em Segurança do Trabalho"],
-            "saude": ["Curso Técnico em Cuidados de Idosos"],
-            "humanas": ["Curso Técnico em Recursos Humanos", "Curso Técnico em Serviços Jurídicos"],
-            "gestao": ["Curso Técnico em Administração", "Curso Técnico em Comércio Exterior", "Curso Técnico em Logística", "Curso Técnico em Marketing", "Curso Técnico em Recursos Humanos"],
-            "comunicacao": ["Curso Técnico em Marketing", "Curso Técnico em Comércio Exterior"]
+            'COM': ['Marketing', 'Recursos Humanos'],
+            'NEG': ['Administração', 'Comércio Exterior', 'Logística', 'Serviços Jurídicos'],
+            'TEC': ['Desenvolvimento de Sistemas', 'Informática para Internet'],
+            'SAU': ['Cuidados de Idosos', 'Segurança do Trabalho']
         };
 
+        const profileDescriptions = {
+            'COM': 'Seu perfil de **Comunicação** é ideal para quem gosta de interagir, expressar ideias e usar a criatividade para influenciar pessoas.',
+            'NEG': 'Seu perfil de **Negócios** é para quem tem visão estratégica, gosta de planejar, liderar e alcançar resultados práticos.',
+            'TEC': 'Seu perfil de **Tecnologia** é para quem tem um pensamento lógico, adora resolver problemas complexos e tem interesse em programação e inovação.',
+            'SAU': 'Seu perfil de **Saúde** é para quem tem empatia, se preocupa com o bem-estar dos outros e busca carreiras que envolvam cuidado e assistência.'
+        };
+        
         let currentQuestionIndex = 0;
-        let scores = {
-            "exatas": 0,
-            "tecnologia": 0,
-            "saude": 0,
-            "humanas": 0,
-            "gestao": 0,
-            "comunicacao": 0
-        };
+        let scores = { 'COM': 0, 'NEG': 0, 'TEC': 0, 'SAU': 0 };
+        const elements = {};
+        const screenIds = ['question-area', 'result-area', 'game-area', 'guess-word-area', 'organize-routine-area', 'pre-game-area'];
 
-        const questionTextEl = document.getElementById('question-text');
-        const answersContainerEl = document.getElementById('answers-container');
-        const progressBar = document.getElementById('progress-bar');
-        const questionArea = document.getElementById('question-area');
-        const resultArea = document.getElementById('result-area');
-        const result1El = document.getElementById('result-1');
-        const result2El = document.getElementById('result-2');
-        const resultExplanationEl = document.getElementById('result-explanation');
-        const backToMenuButton = document.getElementById('back-to-menu-button');
-
-        function showQuestion() {
-            const currentQuestion = quizData[currentQuestionIndex];
-            questionTextEl.innerText = currentQuestion.question;
-            answersContainerEl.innerHTML = '';
-
-            const progress = (currentQuestionIndex / quizData.length) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            currentQuestion.answers.forEach(answer => {
-                const button = document.createElement('button');
-                button.innerText = answer.text;
-                button.classList.add('answer-button');
-                button.addEventListener('click', () => selectAnswer(answer.profiles));
-                answersContainerEl.appendChild(button);
+        function showScreen(screenId) {
+            screenIds.forEach(id => {
+                const screen = document.getElementById(id);
+                if (screen) screen.style.display = 'none';
             });
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.style.display = 'flex';
+                targetScreen.classList.remove('pop-in');
+                void targetScreen.offsetWidth;
+                targetScreen.classList.add('pop-in');
+            }
+        }
+        
+        function showQuestion() {
+            if (currentQuestionIndex >= quizData.length) {
+                showResult();
+                return;
+            }
+            showScreen('question-area');
+            const question = quizData[currentQuestionIndex];
+            elements.questionNumber.innerText = `Pergunta ${currentQuestionIndex + 1} de ${quizData.length}`;
+            elements.questionText.innerText = question.question;
+            elements.optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option.text;
+                button.className = 'option';
+                button.onclick = () => handleAnswer(option.profile);
+                elements.optionsContainer.appendChild(button);
+            });
+            updateProgressBar();
         }
 
-        function selectAnswer(profiles) {
-            profiles.forEach(p => {
-                if (scores.hasOwnProperty(p)) {
-                    scores[p]++;
-                }
-            });
-
+        function handleAnswer(profile) {
+            scores[profile]++;
             currentQuestionIndex++;
-            if (currentQuestionIndex < quizData.length) {
-                showQuestion();
+            const gameTriggers = { 5: 'memory-game', 10: 'guess-word', 15: 'organize-routine' };
+            const gameType = gameTriggers[currentQuestionIndex];
+            if (gameType) {
+                showPreGame(gameType);
             } else {
-                showResults();
+                showQuestion();
+            }
+        }
+        
+        function updateProgressBar() {
+            if (elements.progressBar) {
+                const progress = (currentQuestionIndex / quizData.length) * 100;
+                elements.progressBar.style.width = `${progress}%`;
+            }
+        }
+        
+        function showPreGame(gameType) {
+            showScreen('pre-game-area');
+            elements.preGameProgress.style.width = '0';
+            setTimeout(() => { elements.preGameProgress.style.width = '100%'; }, 50);
+            setTimeout(() => {
+                const gameFunctions = {
+                    'memory-game': showMemoryGame,
+                    'guess-word': showGuessWordGame,
+                    'organize-routine': showOrganizeRoutineGame
+                };
+                gameFunctions[gameType]();
+            }, 2000);
+        }
+
+        let firstCard, secondCard, lockBoard, matchedPairs;
+        function showMemoryGame() {
+            showScreen('game-area');
+            elements.gameGrid.innerHTML = '';
+            matchedPairs = 0;
+            lockBoard = false;
+            firstCard = secondCard = null;
+            const emojis = ['🎨', '🧠', '⚙️', '📈', '⚖️', '❤️'].flatMap(e => [e, e]).sort(() => 0.5 - Math.random());
+            emojis.forEach(emoji => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.innerHTML = `<div class="card-face card-front">${emoji}</div><div class="card-face card-back"></div>`;
+                card.addEventListener('click', flipCard);
+                elements.gameGrid.appendChild(card);
+            });
+            elements.gameStatus.textContent = 'Encontre os 6 pares!';
+        }
+        function flipCard(event) {
+            const clickedCard = event.currentTarget;
+            if (lockBoard || clickedCard === firstCard || clickedCard.classList.contains('flipped')) return;
+            clickedCard.classList.add('flipped');
+            if (!firstCard) {
+                firstCard = clickedCard;
+                return;
+            }
+            secondCard = clickedCard;
+            lockBoard = true;
+            if (firstCard.innerText === secondCard.innerText) {
+                matchedPairs++;
+                scores['TEC']++;
+                elements.gameStatus.textContent = `Par encontrado! (${matchedPairs}/6)`;
+                firstCard.removeEventListener('click', flipCard);
+                secondCard.removeEventListener('click', flipCard);
+                firstCard = secondCard = null;
+                lockBoard = false;
+                if (matchedPairs === 6) {
+                    elements.gameStatus.textContent = 'Excelente! Continue o quiz.';
+                    setTimeout(showQuestion, 2000);
+                }
+            } else {
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    firstCard = secondCard = null;
+                    lockBoard = false;
+                }, 1200);
+            }
+        }
+        
+        const words = [ { word: 'MARKETING', category: 'Área: Comunicação', profile: 'COM' }, { word: 'SISTEMAS', category: 'Área: Tecnologia', profile: 'TEC' }, { word: 'LOGISTICA', category: 'Área: Negócios', profile: 'NEG' }, { word: 'CUIDADOS', category: 'Área: Saúde', profile: 'SAU' }];
+        let currentWord, guessedLetters;
+        function showGuessWordGame() {
+            const wordData = words[Math.floor(Math.random() * words.length)];
+            currentWord = wordData.word;
+            guessedLetters = new Set();
+            showScreen('guess-word-area');
+            elements.wordCategory.textContent = wordData.category;
+            elements.guessWordStatus.textContent = '';
+            drawWordDisplay();
+            drawKeyboard();
+        }
+        function drawWordDisplay() {
+            elements.wordDisplay.innerHTML = currentWord.split('').map(letter => `<div class="letter-box">${guessedLetters.has(letter) ? letter : ''}</div>`).join('');
+        }
+        function drawKeyboard() {
+            elements.keyboard.innerHTML = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(key => `<button class="key">${key}</button>`).join('');
+            elements.keyboard.querySelectorAll('.key').forEach(btn => btn.onclick = handleKeyPress);
+        }
+        function handleKeyPress(e) {
+            const letter = e.target.textContent;
+            e.target.disabled = true;
+            if (currentWord.includes(letter)) {
+                currentWord.split('').forEach(l => { if (l === letter) guessedLetters.add(l) });
+                drawWordDisplay();
+                if (currentWord.split('').every(l => guessedLetters.has(l))) {
+                    scores[words.find(w=>w.word === currentWord).profile]++;
+                    elements.guessWordStatus.textContent = 'Palavra correta! +1 Ponto.';
+                    disableKeyboard();
+                    setTimeout(showQuestion, 2000);
+                }
+            } else {
+                elements.guessWordStatus.textContent = `Letra errada!`;
+            }
+        }
+        function disableKeyboard() {
+            elements.keyboard.querySelectorAll('.key').forEach(btn => btn.disabled = true);
+        }
+
+        const correctOrder = ['Acordar e se arrumar', 'Tomar café da manhã', 'Ir para o trabalho/estudo', 'Almoçar', 'Concluir tarefas', 'Relaxar um pouco', 'Jantar'];
+        let draggedItem = null;
+        function showOrganizeRoutineGame() {
+            showScreen('organize-routine-area');
+            elements.organizeRoutineStatus.textContent = '';
+            elements.checkOrderBtn.disabled = false;
+            const shuffledTasks = [...correctOrder].sort(() => Math.random() - 0.5);
+            elements.taskList.innerHTML = '';
+            shuffledTasks.forEach(taskText => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                li.textContent = taskText;
+                li.draggable = true;
+                elements.taskList.appendChild(li);
+            });
+            addDragListeners();
+        }
+        function addDragListeners() {
+            const tasks = elements.taskList.querySelectorAll('.task-item');
+            tasks.forEach(task => {
+                task.addEventListener('dragstart', (e) => { draggedItem = e.target; setTimeout(() => e.target.style.opacity = '0.5', 0); });
+                task.addEventListener('dragend', (e) => { e.target.style.opacity = '1'; draggedItem = null; });
+                task.addEventListener('dragover', e => e.preventDefault());
+                task.addEventListener('drop', (e) => { e.preventDefault(); if (e.target.classList.contains('task-item') && e.target !== draggedItem) { const allItems = [...elements.taskList.children]; const draggedIndex = allItems.indexOf(draggedItem); const targetIndex = allItems.indexOf(e.target); if (draggedIndex > targetIndex) { e.target.before(draggedItem); } else { e.target.after(draggedItem); } } });
+            });
+        }
+        function checkTaskOrder() {
+            const currentOrder = [...elements.taskList.querySelectorAll('.task-item')].map(li => li.textContent);
+            if (JSON.stringify(currentOrder) === JSON.stringify(correctOrder)) {
+                scores['NEG']++;
+                elements.organizeRoutineStatus.textContent = 'Ordem correta! +1 Ponto de organização.';
+                elements.checkOrderBtn.disabled = true;
+                setTimeout(showQuestion, 2000);
+            } else {
+                elements.organizeRoutineStatus.textContent = 'Ordem incorreta. Tente novamente!';
             }
         }
 
-        function showResults() {
-            progressBar.style.width = '100%';
-            setTimeout(() => {
-                questionArea.style.display = 'none';
-                resultArea.style.display = 'flex';
-            }, 300);
-
+        function showResult() {
+            showScreen('result-area');
             const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-
-            // Get the top 2 profiles
-            const topProfile = sortedScores[0][0];
-            const secondProfile = sortedScores[1][0];
-
-            // Get a random course from each profile
-            const firstCourseList = courseMapping[topProfile];
-            const firstCourse = firstCourseList[Math.floor(Math.random() * firstCourseList.length)];
-
-            const secondCourseList = courseMapping[secondProfile];
-            const secondCourse = secondCourseList[Math.floor(Math.random() * secondCourseList.length)];
-
-            // Set the course texts
-            result1El.innerText = firstCourse;
-            result2El.innerText = secondCourse;
-
-            // Set the explanation text
-            resultExplanationEl.innerHTML = `Com base nas suas respostas, seu perfil é mais forte nas áreas de **${topProfile.toUpperCase()}** e **${secondProfile.toUpperCase()}**. <br><br> ${profileDescriptions[topProfile]} <br><br> ${profileDescriptions[secondProfile]}`;
+            const [topProfile, secondProfile] = [sortedScores[0][0], sortedScores[1][0]];
+            const getRandomCourse = (profile) => courseMapping[profile][Math.floor(Math.random() * courseMapping[profile].length)];
+            elements.result1.innerText = getRandomCourse(topProfile);
+            elements.result2.innerText = getRandomCourse(secondProfile);
+            elements.resultExplanation.innerHTML = `Com base nas suas respostas, seu perfil é mais forte em <strong>${profileDescriptions[topProfile].split('**')[1]}</strong> e <strong>${profileDescriptions[secondProfile].split('**')[1]}</strong>.<br><br>${profileDescriptions[topProfile].replace(/\*\*/g, '')}<br><br>${profileDescriptions[secondProfile].replace(/\*\*/g, '')}`;
         }
-
-        backToMenuButton.addEventListener('click', () => {
-            window.location.href = './index.html';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const allElementIds = [
+                'question-number', 'question-text', 'options-container', 'progress-bar', 
+                'game-grid', 'game-status', 
+                'word-category', 'word-display', 'keyboard', 'guess-word-status', 
+                'task-list', 'check-order-btn', 'organize-routine-status', 
+                'result-explanation', 'result-1', 'result-2', 'back-to-menu-button', 
+                'pre-game-progress'
+            ];
+            allElementIds.forEach(id => {
+                const camelCaseId = id.replace(/-(\w)/g, (m, p1) => p1.toUpperCase());
+                elements[camelCaseId] = document.getElementById(id);
+            });
+            
+            if (elements.backToMenuButton) elements.backToMenuButton.onclick = () => window.location.href = './index.html';
+            if (elements.checkOrderBtn) elements.checkOrderBtn.onclick = checkTaskOrder;
+            
+            showQuestion();
         });
-
-        document.addEventListener('DOMContentLoaded', showQuestion);
     </script>
 </body>
 </html>
+
